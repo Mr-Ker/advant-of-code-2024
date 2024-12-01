@@ -33,17 +33,26 @@ impl Day01 {
         let mut sorted_second_list: Vec<i64> = self.second_list.clone();
         sorted_first_list.sort();
         sorted_second_list.sort();
+
         let mut result: i64 = 0;
         let len = sorted_first_list.len();
+
         for i in 0..len {
             let distance: i64 = sorted_first_list[i] - sorted_second_list[i];
             result += distance.abs();
         }
+
         result
     }
 
     pub fn part2(&self) -> i64 {
-        23
+        let mut result = 0;
+
+        for item in self.first_list.iter() {
+            let count = self.second_list.iter().filter(|&n| *n == *item).count();
+            result += (count as i64) * item;
+        }
+        result
     }
 }
 
@@ -60,6 +69,6 @@ mod tests {
     #[test]
     fn result_part2() {
         let day01: Day01 = Day01::new(String::from("input_examples"));
-        assert_eq!(day01.part2(), 23);
+        assert_eq!(day01.part2(), 31);
     }
 }
