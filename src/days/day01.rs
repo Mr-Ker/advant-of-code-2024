@@ -1,7 +1,11 @@
-use std::fs::read_to_string;
+use std::fs::File;
+use std::io::BufRead;
+use std::io::BufReader;
+
+use crate::days::common::generic_day;
 
 pub struct Day01 {
-    pub input_folder: String,
+    input_file: String,
     first_list: Vec<i64>,
     second_list: Vec<i64>,
 }
@@ -9,26 +13,33 @@ pub struct Day01 {
 impl Day01 {
     pub fn new(input_folder: String) -> Day01 {
         let mut day01: Day01 = Day01 {
-            input_folder,
+            input_file: format!("{}/day01.txt", input_folder),
             first_list: Vec::new(),
             second_list: Vec::new(),
         };
-        day01.open_input();
+        day01.parse_input();
         day01
     }
 
-    fn open_input(&mut self) {
-        for line in read_to_string(format!("{}/day01.txt", self.input_folder))
-            .unwrap()
-            .lines()
-        {
-            let values: Vec<&str> = line.split_whitespace().collect();
-            self.first_list.push(values[0].parse().unwrap());
-            self.second_list.push(values[1].parse().unwrap());
-        }
+    fn parse_line(&mut self, line: &String) {
+        let values = line
+            .split_whitespace()
+            .map(|value| value.parse::<i64>().unwrap())
+            .collect::<Vec<_>>();
+        self.first_list.push(values[0]);
+        self.second_list.push(values[1]);
     }
 
-    pub fn part1(&self) -> i64 {
+    fn parse_input(&mut self) {
+        let _ = BufReader::new(File::open(&self.input_file).unwrap())
+            .lines()
+            .map(|x| x.unwrap())
+            .map(|line| self.parse_line(&line)).collect::<Vec<_>>();
+    }
+}
+
+impl generic_day::GenericDay for Day01 {
+    fn part1(&self) -> i64 {
         let mut sorted_first_list: Vec<i64> = self.first_list.clone();
         let mut sorted_second_list: Vec<i64> = self.second_list.clone();
         sorted_first_list.sort();
@@ -45,7 +56,7 @@ impl Day01 {
         result
     }
 
-    pub fn part2(&self) -> i64 {
+    fn part2(&self) -> i64 {
         let mut result = 0;
 
         for item in self.first_list.iter() {
@@ -59,6 +70,7 @@ impl Day01 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::days::GenericDay;
 
     #[test]
     fn result_part1() {
