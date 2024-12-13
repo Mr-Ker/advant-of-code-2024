@@ -1,5 +1,7 @@
 # Advent of Code 2024
 
+![Build Status](https://github.com/Mr-Ker/advent-of-code-2024/actions/workflows/rust.yml/badge.svg)
+
 The provided solutions for the 2024 edition of Advent of Code are implemented in
 Rust.
 
