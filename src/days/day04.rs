@@ -3,11 +3,7 @@ use std::io::BufRead;
 use std::io::BufReader;
 
 use crate::days::common::generic_day;
-
-struct Position {
-    x: i64,
-    y: i64,
-}
+use crate::days::common::position::Position;
 
 struct Diagonal {
     line: String,
