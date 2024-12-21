@@ -2,8 +2,8 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-use crate::days::common::generic_day;
-use crate::days::common::position::Position;
+use super::common::generic_day;
+use super::common::position::Position;
 
 struct Diagonal {
     line: String,
@@ -134,10 +134,9 @@ impl Day04 {
             .map(|c| c.to_string())
             .collect::<Vec<_>>();
 
-        for i in 0..vertical_word_search.len() {
+        for (i, column) in vertical_word_search.iter_mut().enumerate() {
             for j in 1..self.horizontal_word_search.len() {
-                vertical_word_search[i]
-                    .push(self.horizontal_word_search[j].chars().nth(i).unwrap());
+                column.push(self.horizontal_word_search[j].chars().nth(i).unwrap());
             }
         }
 

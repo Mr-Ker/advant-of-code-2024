@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-use crate::days::common::generic_day;
+use super::common::generic_day;
 
 pub struct Day03 {
     input_file: String,

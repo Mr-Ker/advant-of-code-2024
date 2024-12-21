@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-use crate::days::common::generic_day;
+use super::common::generic_day;
 
 pub struct Day02 {
     input_file: String,
@@ -57,12 +57,12 @@ impl Day02 {
         is_report_safe
     }
 
-    fn try_if_report_is_safe_by_removing_one_level(&self, report: &Vec<i64>) -> bool {
+    fn try_if_report_is_safe_by_removing_one_level(&self, report: &[i64]) -> bool {
         let len = report.len();
         let mut is_report_safe = false;
 
         for i in 0..len {
-            let mut test_levels = report.clone();
+            let mut test_levels = report.to_owned();
             // remove the i-th level from the report
             test_levels.drain(i..i + 1);
             if self.is_report_safe(test_levels) {
@@ -89,12 +89,10 @@ impl generic_day::GenericDay for Day02 {
     fn part2(&self) -> i64 {
         let mut result: i64 = 0;
         for levels in self.reports.iter() {
-            if self.is_report_safe(levels.clone()) {
+            if self.is_report_safe(levels.clone())
+                || self.try_if_report_is_safe_by_removing_one_level(levels)
+            {
                 result += 1;
-            } else {
-                if self.try_if_report_is_safe_by_removing_one_level(&levels) {
-                    result += 1;
-                }
             }
         }
         result

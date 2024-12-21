@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-use crate::days::common::generic_day;
+use super::common::generic_day;
 
 pub struct Day05 {
     input_file: String,
@@ -48,7 +48,7 @@ impl Day05 {
 
         let mut all_page_ordering_rules_processed: bool = false;
         for line in lines {
-            if line == "" {
+            if line.is_empty() {
                 all_page_ordering_rules_processed = true;
             } else if !all_page_ordering_rules_processed {
                 self.process_page_ordering_rules(line);
@@ -57,13 +57,13 @@ impl Day05 {
             }
         }
     }
-    fn is_update_correctly_ordered(&self, update: &Vec<i64>) -> bool {
+    fn is_update_correctly_ordered(&self, update: &[i64]) -> bool {
         let mut result = true;
 
         for (position, page) in update.iter().enumerate() {
             if self.page_ordering_rules.contains_key(page) {
                 for not_allowed_previous_page in &self.page_ordering_rules[page] {
-                    if update[0..position].contains(&not_allowed_previous_page) {
+                    if update[0..position].contains(not_allowed_previous_page) {
                         result = false;
                         break;
                     }
@@ -76,21 +76,21 @@ impl Day05 {
         result
     }
 
-    fn correct_update(&self, update: &Vec<i64>) -> Vec<i64> {
-        let mut corrected_update = update.clone();
+    fn correct_update(&self, update: &[i64]) -> Vec<i64> {
+        let mut corrected_update = update.to_owned();
 
         while !self.is_update_correctly_ordered(&corrected_update) {
-            let mut positions_to_swap = vec![0, 0];
+            let mut positions_to_swap = [0, 0];
             for (position, page) in corrected_update.iter().enumerate() {
                 if self.page_ordering_rules.contains_key(page) {
                     for not_allowed_previous_page in &self.page_ordering_rules[page] {
-                        if corrected_update[0..position].contains(&not_allowed_previous_page) {
+                        if corrected_update[0..position].contains(not_allowed_previous_page) {
                             let position_to_swap_with = corrected_update
                                 .iter()
                                 .position(|p| p == not_allowed_previous_page)
                                 .unwrap();
-                            positions_to_swap[0]=position;
-                            positions_to_swap[1]=position_to_swap_with;
+                            positions_to_swap[0] = position;
+                            positions_to_swap[1] = position_to_swap_with;
                             break;
                         }
                     }

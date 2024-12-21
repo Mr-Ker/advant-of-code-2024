@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-use crate::days::common::generic_day;
+use super::common::generic_day;
 
 pub struct Day01 {
     input_file: String,
@@ -21,7 +21,7 @@ impl Day01 {
         day01
     }
 
-    fn parse_line(&mut self, line: &String) {
+    fn parse_line(&mut self, line: &str) {
         let values = line
             .split_whitespace()
             .map(|value| value.parse::<i64>().unwrap())
@@ -34,7 +34,8 @@ impl Day01 {
         let _ = BufReader::new(File::open(&self.input_file).unwrap())
             .lines()
             .map(|x| x.unwrap())
-            .map(|line| self.parse_line(&line)).collect::<Vec<_>>();
+            .map(|line| self.parse_line(&line))
+            .collect::<Vec<_>>();
     }
 }
 
