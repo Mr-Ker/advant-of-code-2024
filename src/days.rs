@@ -5,6 +5,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 
 use common::generic_day::GenericDay;
 
@@ -21,6 +22,7 @@ pub fn run_day(day: u8, input_folder: String) {
         4 => run_my_day(day04::Day04::new(input_folder)),
         5 => run_my_day(day05::Day05::new(input_folder)),
         6 => run_my_day(day06::Day06::new(input_folder)),
+        7 => run_my_day(day07::Day07::new(input_folder)),
         _ => panic!("Day not found!"),
     }
 }
